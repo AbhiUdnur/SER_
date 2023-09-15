@@ -1,12 +1,12 @@
 import numpy as np
-import pandas as pd
-import os
+# import pandas as pd
+# import os
 import librosa
 import librosa.display
-import IPython
-from IPython.display import Audio
-from IPython.display import Image
-import matplotlib.pyplot as plt
+# import IPython
+# from IPython.display import Audio
+# from IPython.display import Image
+# import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 from sklearn.preprocessing import StandardScaler
@@ -136,8 +136,10 @@ def process_files(audio_path):
 
     EMOTIONS = {1:'neutral', 2:'calm', 3:'happy', 4:'sad', 5:'angry', 6:'fear', 7:'disgust', 0:'surprise'}
     model = HybridModel(len(EMOTIONS))
-    model.load_state_dict(torch.load("/workspaces/SER_/models/cnn_lstm_model.pt", map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load("/workspaces/SER_/models/cnn_lstm_model.pt",\
+                                      map_location=torch.device('cpu')))
     SAMPLE_RATE = 48000
+
     file_path = audio_path
     mel_spectrograms = []
     signals = []
@@ -157,7 +159,7 @@ def process_files(audio_path):
     for mel_spec in mel_train:
         chunks = splitIntoChunks(mel_spec, win_size=128,stride=64)
         mel_train_chunked.append(chunks)
-    
+        
     X_train = np.stack(mel_train_chunked,axis=0)
     X_train = np.expand_dims(X_train,2)
 

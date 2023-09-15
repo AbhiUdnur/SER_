@@ -20,23 +20,53 @@
 
     <style>
      body {
-    font-family: sans-serif;
-    background-color: #eeeeee;
+        font-family: sans-serif;
+        background-color: #eeeeee;
     }
-</style>
+
+    .navbar {
+        background-color: #007bff; /* Change the background color of the navbar */
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+        color: #fff; /* Change the color of the navbar links */
+    }
+
+    h3 {
+        text-align: center; /* Center the text */
+        margin-top: 20px; /* Add some top margin for spacing */
+    }
+
+    .First {
+        width: 200px; /* Increase the block size */
+        height: 100px; /* Increase the block size */
+        margin: auto;
+        border: 5px solid black;
+        text-align: center; /* Center the text horizontally */
+        line-height: 100px; /* Vertically center the text */
+        /* background-color: #007bff; Add background color */
+        color: #1a0b0b; /* Change the text color to white */
+        font-family: Arial, sans-serif; /* Set the font */
+        font-size: 24px; /* Set the font size */
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+    </style>
+
+ 
 </head>
 <body>
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+<nav class="navbar navbar-expand-sm navbar-dark">
     <ul class="navbar-nav">
         <li class="nav-item active">
             <a class="nav-link" href="#">Depression Detection</a>
         </li>
-
     </ul>
 </nav>
 
 <h3> Predicted class:</h3>
-<h3> {{LABEL}} </h3>
+<div class="First"> {{LABEL}} </div>
+
 <br>
 </body>
 </html>

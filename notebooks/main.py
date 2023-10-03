@@ -132,13 +132,14 @@ class HybridModel(nn.Module):
         output_softmax = nn.functional.softmax(output_logits,dim=1)
         return output_logits, output_softmax
 
-def process_files(audio_path):
+EMOTIONS = {1:'neutral', 2:'calm', 3:'happy', 4:'sad', 5:'angry', 6:'fear', 7:'disgust', 0:'surprise'}
+model = HybridModel(len(EMOTIONS))
+model.load_state_dict(torch.load("/workspaces/SER_/models/cnn_lstm_model.pt",map_location=torch.device('cpu')))
+SAMPLE_RATE = 48000
+from joblib import load
+scaler = load('/workspaces/SER_/models/std_scaler.bin')
 
-    EMOTIONS = {1:'neutral', 2:'calm', 3:'happy', 4:'sad', 5:'angry', 6:'fear', 7:'disgust', 0:'surprise'}
-    model = HybridModel(len(EMOTIONS))
-    model.load_state_dict(torch.load("/workspaces/SER_/models/cnn_lstm_model.pt",\
-                                      map_location=torch.device('cpu')))
-    SAMPLE_RATE = 48000
+def process_files(audio_path):
 
     file_path = audio_path
     mel_spectrograms = []
@@ -163,16 +164,18 @@ def process_files(audio_path):
     X_train = np.stack(mel_train_chunked,axis=0)
     X_train = np.expand_dims(X_train,2)
 
-    scaler = StandardScaler()
+    # scaler = StandardScaler()
     b,t,c,h,w = X_train.shape
     X_train = np.reshape(X_train, newshape=(b,-1))
-    X_train = scaler.fit_transform(X_train)
+    X_train = scaler.transform(X_train)
+    print(X_train)
     X_train = np.reshape(X_train, newshape=(b,t,c,h,w))
     X_tensor = torch.tensor(X_train).float()
 
-    y = model(X_tensor)
-    y = y[1].detach()
-    pred = torch.argmax(y).tolist()
+    model.eval()
+    output_logits, output_softmax = model(X_tensor)
+    print(output_softmax)
+    predictions = torch.argmax(output_softmax,dim=1).tolist()[0]
+    print(predictions)
 
-    return EMOTIONS[pred]
-
+    return EMOTIONS[predictions]

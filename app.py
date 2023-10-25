@@ -1,7 +1,7 @@
 import os, datetime
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, jsonify, request, url_for, redirect
-import main
+from notebooks import main
 import numpy as np
 app = Flask(__name__,template_folder='/workspaces/SER_/templates')
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
